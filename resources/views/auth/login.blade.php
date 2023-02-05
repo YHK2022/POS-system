@@ -4,6 +4,7 @@
 
 <head>
     <title>{{ $general_setting->site_title }}</title>
+    {{-- <title> <img src="{{ url('/logo', $general_setting->site_logo) }}" style="  width: 150px;"> </title> --}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -24,7 +25,7 @@
                 <div class="col-md-6 col-lg-5">
                     <div class="login-wrap p-4 p-md-5">
                         <div class=" d-flex align-items-center justify-content-center">
-                            <img src="{{ url('/logo', $general_setting->site_logo) }}" style="  width: 150px;">
+                            <img src="{{ url('/logo', $general_setting->site_logo) }}" style="  width: 120px;">
                         </div>
 
                         <h3 class="text-center mb-4">Have an account?</h3>
@@ -32,14 +33,12 @@
                             @csrf <div class="form-group">
                                 <input id="login-username" type="text" name="name" required
                                     class="form-control rounded-left" value="" placeholder="Username">
-                                {{-- <label for="login-username" class="label-material">{{ trans('file.UserName') }}</label> --}}
                                 @if ($errors->has('name'))
                                     <p>
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </p>
                                 @endif
 
-                                {{-- <input type="text" class="form-control rounded-left" placeholder="Username" required> --}}
                             </div>
                             <div class="form-group d-flex">
 
