@@ -34,7 +34,9 @@
                 <tbody>
                     @foreach ($lims_expense_all as $key => $expense)
                         <?php
-                        $warehouse = DB::table('warehouses')->find($expense->warehouse_id);
+                        $warehouse = DB::table('warehouses')
+                            ->where('company_id', auth()->user()->company_id)
+                            ->find($expense->warehouse_id);
                         $expense_category = DB::table('expense_categories')->find($expense->expense_category_id);
                         ?>
                         <tr data-id="{{ $expense->id }}">
@@ -114,10 +116,12 @@
                     if (Auth::user()->role_id > 2) {
                         $lims_warehouse_list = DB::table('warehouses')
                             ->where([['is_active', true], ['id', Auth::user()->warehouse_id]])
+                            ->where('company_id', auth()->user()->company_id)
                             ->get();
                     } else {
                         $lims_warehouse_list = DB::table('warehouses')
                             ->where('is_active', true)
+                            ->where('company_id', auth()->user()->company_id)
                             ->get();
                     }
                     ?>
