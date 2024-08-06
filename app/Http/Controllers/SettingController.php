@@ -12,7 +12,7 @@ use App\PosSetting;
 use App\Warehouse;
 use Clickatell\ClickatellException;
 use Clickatell\Rest;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use ZipArchive;

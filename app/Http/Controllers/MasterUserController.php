@@ -9,12 +9,12 @@ use App\CustomerGroup;
 use App\Roles;
 use App\User;
 use App\Warehouse;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-use Keygen;
+use Keygen\Keygen;
 
 class MasterUserController extends Controller
 {

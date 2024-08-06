@@ -25,8 +25,8 @@ use App\Transfer;
 use App\User;
 use App\Variant;
 use App\Warehouse;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 

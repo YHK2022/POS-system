@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Employee;
 use App\HrmSetting;
 use App\Attendance;
-use Auth;
-use DB;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 

@@ -15,13 +15,12 @@ use Rawilk\Printing\Exceptions\UnsupportedDriver;
 
 class Factory
 {
-    protected array $config;
     protected array $drivers = [];
+
     protected array $customCreators = [];
 
-    public function __construct(array $config)
+    public function __construct(protected array $config)
     {
-        $this->config = $config;
     }
 
     public function driver(?string $driver = null): Driver
@@ -51,11 +50,11 @@ class Factory
 
     protected function createPrintnodeDriver(array $config): Driver
     {
-        if (! isset($config['key']) || empty($config['key'])) {
+        if (empty($config['key'])) {
             throw InvalidDriverConfig::invalid('You must provide an api key for the PrintNode driver.');
         }
 
-        return new PrintNode($config['key']);
+        return new PrintNode;
     }
 
     protected function get(string $driver): Driver

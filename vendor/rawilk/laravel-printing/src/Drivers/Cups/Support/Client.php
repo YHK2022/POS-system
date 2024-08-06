@@ -21,14 +21,16 @@ use Smalot\Cups\CupsException;
  * This class is here for now as a workaround since the declaration
  * of sendRequest() is not compatible with the interface in the
  * dependency and has not been updated yet.
+ *
+ * In place of: Smalot\Cups\Transport\Client
  */
 class Client implements HttpClient
 {
-    const SOCKET_URL = 'unix:///var/run/cups/cups.sock';
+    public const SOCKET_URL = 'unix:///var/run/cups/cups.sock';
 
-    const AUTHTYPE_BASIC = 'basic';
+    public const AUTHTYPE_BASIC = 'basic';
 
-    const AUTHTYPE_DIGEST = 'digest';
+    public const AUTHTYPE_DIGEST = 'digest';
 
     /** @var \Http\Client\Common\PluginClient */
     protected $httpClient;
@@ -98,14 +100,13 @@ class Client implements HttpClient
         if ($this->username || $this->password) {
             switch ($this->authType) {
                 case self::AUTHTYPE_BASIC:
-                    $pass = base64_encode($this->username.':'.$this->password);
-                    $authentication = 'Basic '.$pass;
+                    $pass = base64_encode($this->username . ':' . $this->password);
+                    $authentication = 'Basic ' . $pass;
 
                     break;
 
                 case self::AUTHTYPE_DIGEST:
                     throw new CupsException('Auth type not supported');
-
                 default:
                     throw new CupsException('Unknown auth type');
             }

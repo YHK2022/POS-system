@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Product;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;

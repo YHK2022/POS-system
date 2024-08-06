@@ -11,12 +11,12 @@ use App\Tax;
 use App\Unit;
 use App\Variant;
 use App\Warehouse;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use DNS1D;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Keygen;
+use Keygen\Keygen;
 use Spatie\Permission\Models\Role;
 
 class ProductController extends Controller

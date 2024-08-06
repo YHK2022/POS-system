@@ -9,7 +9,7 @@ use App\Biller;
 use App\Employee;
 use App\User;
 use App\Department;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller

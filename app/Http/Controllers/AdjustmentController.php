@@ -8,9 +8,11 @@ use App\Product_Warehouse;
 use App\Product;
 use App\Adjustment;
 use App\ProductAdjustment;
-use DB;
+// use Illuminate\Support\Facades\DB;
 use App\StockCount;
-use Auth;
+// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 

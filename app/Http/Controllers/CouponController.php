@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Coupon;
-use Auth;
-use Keygen;
+use Illuminate\Support\Facades\Auth;
+// use Keygen\Keygen;
+use Keygen\Keygen;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 

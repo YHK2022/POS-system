@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Rawilk\Printing\Receipts;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
 use Mike42\Escpos\PrintConnectors\DummyPrintConnector;
 use Mike42\Escpos\Printer;
 
 /**
  * @see Printer
+ *
  * @method self bitImage(\Mike42\Escpos\EscposImage $image, $size)
  * @method self close()
  * @method self cut(int $mode = Printer::CUT_FULL, int $lines = 3)
@@ -38,8 +40,12 @@ use Mike42\Escpos\Printer;
  */
 class ReceiptPrinter
 {
+    use Macroable;
+
     protected DummyPrintConnector $connector;
+
     protected Printer $printer;
+
     protected static int $lineCharacterLength;
 
     public function __construct()
@@ -48,6 +54,27 @@ class ReceiptPrinter
         $this->printer = new Printer($this->connector);
 
         static::$lineCharacterLength = config('printing.receipts.line_character_length', 45);
+    }
+
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    public function __toString(): string
+    {
+        return $this->connector->getData();
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (method_exists($this->printer, $name)) {
+            $this->printer->{$name}(...$arguments);
+
+            return $this;
+        }
+
+        throw new InvalidArgumentException("Method [{$name}] not found on receipt printer object.");
     }
 
     public function centerAlign(): self
@@ -78,7 +105,7 @@ class ReceiptPrinter
         return $this;
     }
 
-    public function lineHeight(int $height = null): self
+    public function lineHeight(?int $height = null): self
     {
         $this->printer->setLineSpacing($height);
 
@@ -124,26 +151,5 @@ class ReceiptPrinter
     public function doubleLine(): self
     {
         return $this->text(str_repeat('=', static::$lineCharacterLength));
-    }
-
-    public function __toString(): string
-    {
-        return $this->connector->getData();
-    }
-
-    public function __call($name, $arguments)
-    {
-        if (method_exists($this->printer, $name)) {
-            $this->printer->{$name}(...$arguments);
-
-            return $this;
-        }
-
-        throw new InvalidArgumentException("Method [{$name}] not found on receipt printer object.");
-    }
-
-    public function __destruct()
-    {
-        $this->close();
     }
 }

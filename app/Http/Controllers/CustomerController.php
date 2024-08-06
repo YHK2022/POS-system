@@ -8,7 +8,7 @@ use App\Customer;
 use App\Deposit;
 use App\User;
 use Illuminate\Validation\Rule;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Mail\UserNotification;

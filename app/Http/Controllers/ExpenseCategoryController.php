@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ExpenseCategory;
-use Keygen;
+use Keygen\Keygen;
 use Illuminate\Validation\Rule;
 
 class ExpenseCategoryController extends Controller

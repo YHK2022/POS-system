@@ -5,28 +5,26 @@ declare(strict_types=1);
 namespace Rawilk\Printing;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Macroable;
 use Rawilk\Printing\Contracts\Driver;
 use Rawilk\Printing\Contracts\Printer;
+use Rawilk\Printing\Contracts\PrintJob;
+use Throwable;
 
 class Printing implements Driver
 {
-    protected Driver $driver;
+    use Macroable;
 
-    /** @var null|string|mixed */
-    protected $defaultPrinterId;
-
-    public function __construct(Driver $driver, $defaultPrinterId = null)
+    public function __construct(protected Driver $driver, protected mixed $defaultPrinterId = null)
     {
-        $this->driver = $driver;
-        $this->defaultPrinterId = $defaultPrinterId;
     }
 
     public function defaultPrinter(): ?Printer
     {
-        return $this->find($this->defaultPrinterId);
+        return $this->printer($this->defaultPrinterId);
     }
 
-    public function defaultPrinterId()
+    public function defaultPrinterId(): mixed
     {
         return $this->defaultPrinterId;
     }
@@ -38,7 +36,7 @@ class Printing implements Driver
         return $this;
     }
 
-    public function newPrintTask(): \Rawilk\Printing\Contracts\PrintTask
+    public function newPrintTask(): Contracts\PrintTask
     {
         $task = $this->driver->newPrintTask();
 
@@ -47,11 +45,11 @@ class Printing implements Driver
         return $task;
     }
 
-    public function find($printerId = null): ?Printer
+    public function printer($printerId = null): ?Printer
     {
         try {
-            $printer = $this->driver->find($printerId);
-        } catch (\Throwable $e) {
+            $printer = $this->driver->printer($printerId);
+        } catch (Throwable) {
             $printer = null;
         }
 
@@ -60,17 +58,78 @@ class Printing implements Driver
         return $printer;
     }
 
-    public function printers(): Collection
+    /**
+     * @return \Illuminate\Support\Collection<int, \Rawilk\Printing\Contracts\Printer>
+     */
+    public function printers(?int $limit = null, ?int $offset = null, ?string $dir = null): Collection
     {
         try {
-            $printers = $this->driver->printers();
-        } catch (\Throwable $e) {
-            $printers = collect([]);
+            $printers = $this->driver->printers($limit, $offset, $dir);
+        } catch (Throwable) {
+            $printers = collect();
         }
 
         $this->resetDriver();
 
         return $printers;
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection<int, \Rawilk\Printing\Contracts\PrintJob>
+     */
+    public function printJobs(?int $limit = null, ?int $offset = null, ?string $dir = null): Collection
+    {
+        try {
+            $printJobs = $this->driver->printJobs($limit, $offset, $dir);
+        } catch (Throwable) {
+            $printJobs = collect();
+        }
+
+        $this->resetDriver();
+
+        return $printJobs;
+    }
+
+    public function printJob($jobId = null): ?PrintJob
+    {
+        try {
+            $job = $this->driver->printJob($jobId);
+        } catch (Throwable) {
+            $job = null;
+        }
+
+        $this->resetDriver();
+
+        return $job;
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection<int, \Rawilk\Printing\Contracts\PrintJob>
+     */
+    public function printerPrintJobs($printerId, ?int $limit = null, ?int $offset = null, ?string $dir = null): Collection
+    {
+        try {
+            $printJobs = $this->driver->printerPrintJobs($printerId, $limit, $offset, $dir);
+        } catch (Throwable) {
+            $printJobs = collect();
+        }
+
+        $this->resetDriver();
+
+        return $printJobs;
+    }
+
+    public function printerPrintJob($printerId, $jobId): ?PrintJob
+    {
+        try {
+            $job = $this->driver->printerPrintJob($printerId, $jobId);
+        } catch (Throwable) {
+            $job = null;
+        }
+
+        $this->resetDriver();
+
+        return $job;
     }
 
     private function resetDriver(): void

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Rawilk\Printing\Drivers\PrintNode;
 
 use Illuminate\Support\Str;
-use PrintNode\Client;
+use Rawilk\Printing\Api\PrintNode\Entity\PrintJob as PrintNodePrintJob;
+use Rawilk\Printing\Api\PrintNode\PrintNode as PrintNodeApi;
 use Rawilk\Printing\Contracts\PrintJob;
 use Rawilk\Printing\Drivers\PrintNode\Entity\PrintJob as RawilkPrintJob;
-use Rawilk\Printing\Drivers\PrintNode\Entity\PrintNodePrintJob;
 use Rawilk\Printing\Exceptions\InvalidOption;
 use Rawilk\Printing\Exceptions\InvalidSource;
 use Rawilk\Printing\Exceptions\PrintTaskFailed;
@@ -16,21 +16,23 @@ use Rawilk\Printing\PrintTask as BasePrintTask;
 
 class PrintTask extends BasePrintTask
 {
-    protected Client $client;
     protected PrintNodePrintJob $job;
 
-    public function __construct(Client $client)
+    public function __construct(protected PrintNodeApi $api)
     {
         parent::__construct();
 
-        $this->client = $client;
-        $this->job = new PrintNodePrintJob($this->client);
+        $this->job = new PrintNodePrintJob;
     }
 
-    public function content($content): self
+    public function content($content, string $contentType = ContentType::RAW_BASE64): self
     {
-        $this->job->content = base64_encode($content);
-        $this->job->contentType = ContentType::RAW_BASE64;
+        if (! $contentType) {
+            throw new InvalidSource('Content type is required for the PrintNode driver.');
+        }
+
+        parent::content($content);
+        $this->job->setContent(base64_encode($content))->setContentType($contentType);
 
         return $this;
     }
@@ -41,7 +43,7 @@ class PrintTask extends BasePrintTask
             throw InvalidSource::fileNotFound($filePath);
         }
 
-        // PrintNode will set the content type for us on the job object.
+        // Content type will be set to pdf_base64 by the job.
         $this->job->addPdfFile($filePath);
 
         return $this;
@@ -49,8 +51,9 @@ class PrintTask extends BasePrintTask
 
     public function url(string $url, bool $raw = false): self
     {
-        $this->job->content = $url;
-        $this->job->contentType = $raw ? ContentType::RAW_URI : ContentType::PDF_URI;
+        $this->job
+            ->setContent($url)
+            ->setContentType($raw ? ContentType::RAW_URI : ContentType::PDF_URI);
 
         // TODO: set authentication if credentials passed in
 
@@ -84,25 +87,47 @@ class PrintTask extends BasePrintTask
         return $this->option('copies', $copies);
     }
 
+    public function fitToPage(bool $fitToPage): self
+    {
+        return $this->option('fit_to_page', $fitToPage);
+    }
+
+    public function paper(string $paper): self
+    {
+        return $this->option('paper', $paper);
+    }
+
     public function send(): PrintJob
+    {
+        $this->ensureValidJob();
+
+        $this->job
+            ->setPrinterId($this->printerId)
+            ->setTitle($this->resolveJobTitle())
+            ->setSource($this->printSource)
+            ->setOptions($this->options);
+
+        $printJob = $this->api->createPrintJob($this->job);
+
+        return new RawilkPrintJob($printJob);
+    }
+
+    protected function ensureValidJob(): void
     {
         if (! $this->printerId) {
             throw PrintTaskFailed::missingPrinterId();
         }
 
-        $this->job->printer = $this->printerId;
-        $this->job->title = $this->resolveJobTitle();
-        $this->job->source = $this->printSource;
-        $this->job->setOptions($this->options);
-
-        $printJobId = $this->client->createPrintJob($this->job);
-
-        if (! $printJobId) {
-            throw PrintTaskFailed::driverFailed('PrintNode print job failed to execute.');
+        if (! $this->printSource) {
+            throw PrintTaskFailed::missingSource();
         }
 
-        $this->job->setId($printJobId);
+        if (! $this->job->contentType) {
+            throw PrintTaskFailed::missingContentType();
+        }
 
-        return new RawilkPrintJob($this->job);
+        if (! $this->job->content) {
+            throw PrintTaskFailed::noContent();
+        }
     }
 }

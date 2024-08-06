@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Holiday;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;

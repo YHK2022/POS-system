@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rawilk\Printing\Contracts;
 
 interface PrintTask
@@ -12,7 +14,7 @@ interface PrintTask
 
     public function jobTitle(string $jobTitle): self;
 
-    public function printer($printerId): self;
+    public function printer(Printer|string|null|int $printerId): self;
 
     public function option(string $key, $value): self;
 

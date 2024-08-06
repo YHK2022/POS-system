@@ -8,8 +8,8 @@ use App\Sale;
 use App\Payment;
 use App\Returns;
 use App\Expense;
-use Auth;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 class CashRegisterController extends Controller
 {
 	public function index()

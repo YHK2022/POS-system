@@ -14,8 +14,8 @@ use App\Payment;
 use App\Account;
 use App\Product_Sale;
 use App\Customer;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class MasterController extends Controller
 {

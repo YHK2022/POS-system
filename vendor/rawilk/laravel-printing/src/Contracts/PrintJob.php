@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rawilk\Printing\Contracts;
+
+use Carbon\Carbon;
 
 interface PrintJob
 {
-    public function date();
+    public function date(): ?Carbon;
 
     public function id();
 

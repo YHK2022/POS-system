@@ -10,7 +10,9 @@ use App\Mail\UserNotification;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Auth;
+// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BillerController extends Controller
 {

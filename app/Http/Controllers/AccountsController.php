@@ -9,9 +9,11 @@ use App\Payment;
 use App\Payroll;
 use App\ReturnPurchase;
 use App\Returns;
-use Auth;
-use DB;
+// use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 

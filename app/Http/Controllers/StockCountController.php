@@ -7,9 +7,9 @@ use App\Warehouse;
 use App\Brand;
 use App\Category;
 use App\Product;
-use DB;
+use Illuminate\Support\Facades\DB;
 use App\StockCount;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 

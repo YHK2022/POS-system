@@ -19,7 +19,7 @@
         </div>
     @endif --}}
      <div class="container-fluid">
-            <a href="{{route('master.company.create')}}" class="btn btn-info"><i class="dripicons-plus"></i> {{trans('file.Add User')}}</a>
+            <a href="{{route('master.company.create')}}" class="btn btn-info"><i class="dripicons-plus"></i>Add Company</a>
         </div>
     <div class="table-responsive">
         <table id="user-table" class="table">

@@ -17,7 +17,7 @@ use App\Tax;
 use App\Unit;
 use App\User;
 use App\Warehouse;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;

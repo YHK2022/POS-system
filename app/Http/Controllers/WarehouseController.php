@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Warehouse;
 use Illuminate\Validation\Rule;
-use Keygen;
+use Keygen\Keygen;
 
 class WarehouseController extends Controller
 {

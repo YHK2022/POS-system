@@ -11,8 +11,8 @@ use App\ProductVariant;
 use App\Delivery;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use DB;
-use Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\UserNotification;
 use Illuminate\Support\Facades\Mail;
 

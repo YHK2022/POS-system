@@ -7,7 +7,7 @@ use App\CustomerGroup;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerGroupController extends Controller
 {
